@@ -12,11 +12,12 @@
         .hero-section { background-color: #002244; color: white; padding: 120px 0; position: relative; overflow: hidden; }
         .hero-slider { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
         .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; }
-        .hero-section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 34, 68, 0.35); z-index: 1; }
+        .hero-section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 34, 68, 0.4); z-index: 1; }
         .hero-content { position: relative; z-index: 2; }
         
         .section-title { position: relative; padding-bottom: 15px; margin-bottom: 40px; font-weight: bold; text-align: center;}
         .section-title::after { content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 60px; height: 4px; background-color: #0d6efd; border-radius: 2px; }
+        .section-title.text-white::after { background-color: #ffc107; }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: #ffffff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1030; display: flex; justify-content: space-around; padding: 10px 0; }
         .bottom-nav a { text-align: center; color: #6c757d; text-decoration: none; font-size: 0.75rem; flex-grow: 1; cursor: pointer;}
@@ -28,11 +29,62 @@
         .is-admin .admin-panel { display: block !important; }
         .is-admin .login-btn { display: none !important; } 
         
-        .app-card { transition: transform 0.2s; border: none; }
-        .app-card:hover { transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important; }
+        /* DESAIN CUSTOM SLIDER DENGAN PANAH & AUTOPLAY */
+        .slider-container-wrapper { position: relative; width: 100%; display: flex; align-items: center; padding: 0 15px; }
+        .custom-slider { 
+            display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 1.5rem; padding: 1rem 0; width: 100%;
+            scrollbar-width: none; -ms-overflow-style: none; /* Sembunyikan scrollbar Firefox & IE */
+        }
+        .custom-slider::-webkit-scrollbar { display: none; } /* Sembunyikan scrollbar Chrome/Safari */
+        
+        .slider-btn { 
+            position: absolute; top: 50%; transform: translateY(-50%); width: 45px; height: 45px; 
+            background: rgba(255, 255, 255, 0.7); color: #002244; border: none; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; cursor: pointer; 
+            z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.15); transition: all 0.3s ease; backdrop-filter: blur(5px);
+        }
+        .slider-btn:hover { background: #0d6efd; color: white; }
+        .slider-btn.prev { left: -10px; }
+        .slider-btn.next { right: -10px; }
+        
+        .slide-item { flex: 0 0 auto; }
+        .slide-item.news { width: 320px; }
+        .slide-item.app { width: 100px; text-align: center; white-space: normal; }
+        .slide-item.galeri { width: 280px; }
+
         .news-card { transition: transform 0.2s; border: none; border-radius: 1rem; overflow: hidden; cursor: pointer; }
-        .news-card:hover { transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important; }
+        .news-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important; }
         .news-content-preview { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .app-icon-wrapper { transition: all 0.3s; }
+        .app-icon-wrapper:hover { transform: scale(1.1); }
+
+        /* DESAIN GLASSMORPHISM UNTUK TABEL BOS */
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.15) !important; 
+            backdrop-filter: blur(12px) !important; 
+            -webkit-backdrop-filter: blur(12px) !important; 
+            border: 1px solid rgba(255, 255, 255, 0.3) !important; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25) !important; 
+        }
+        .glass-table { color: #ffffff !important; border-color: rgba(255,255,255,0.2) !important; }
+        .glass-table thead th { 
+            background: rgba(255, 255, 255, 0.2) !important; 
+            color: #ffffff !important; 
+            border-bottom: 2px solid rgba(255,255,255,0.4) !important; 
+            text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem;
+        }
+        .glass-table tbody td { 
+            background: transparent !important; 
+            color: #ffffff !important; 
+            border-bottom: 1px solid rgba(255,255,255,0.15) !important; 
+        }
+        .glass-table tbody tr:hover td { background: rgba(255,255,255,0.1) !important; }
+        .glass-table tfoot th { 
+            background: rgba(0, 0, 0, 0.4) !important; 
+            color: #ffc107 !important; 
+            border-top: 2px solid rgba(255,255,255,0.4) !important; 
+        }
 
         .profile-card { border: none; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 1rem; position: relative; }
         .profile-card img { width: 100%; height: auto; object-fit: cover; }
@@ -90,10 +142,14 @@
     </section>
 
     <section id="berita" class="py-5 bg-light">
-        <div class="container">
+        <div class="container position-relative">
             <h2 class="section-title">Berita & Pengumuman Terbaru</h2>
-            <div class="row g-4 justify-content-center" id="beritaContainer">
-                <div class="col-12 text-center text-muted"><div class="spinner-border text-primary spinner-border-sm"></div> Memuat berita...</div>
+            <div class="slider-container-wrapper" id="beritaWrapper">
+                <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+                <div class="custom-slider" id="beritaContainer">
+                    <div class="w-100 text-center text-muted py-4"><div class="spinner-border text-primary spinner-border-sm"></div> Memuat berita...</div>
+                </div>
+                <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </section>
@@ -132,16 +188,24 @@
         </div>
     </section>
 
-    <section id="danabos" class="py-5 bg-light border-top border-bottom">
-        <div class="container">
-            <h2 class="section-title">Transparansi Dana BOS Sekolah</h2>
+    <section id="danabos" class="py-5 position-relative" style="background-color: #002244; background-size: cover; background-position: center; background-attachment: fixed;">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 34, 68, 0.7); z-index: 1;"></div>
+        <div class="container position-relative" style="z-index: 2;">
+            <h2 class="section-title text-white">Transparansi Dana BOS Sekolah</h2>
+            <div class="admin-panel text-center mb-4">
+                <label class="btn btn-warning btn-sm shadow"><i class="fas fa-camera me-1"></i>Ganti Background BOS
+                    <input type="file" accept="image/*" class="d-none" onchange="handleBosBgUpload(this)">
+                </label>
+                <div id="bosBgLoading" class="text-warning mt-2 d-none spinner-border spinner-border-sm"></div>
+            </div>
+            
             <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="card shadow-sm border-0 rounded-3">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped mb-0">
-                                <thead class="bg-primary text-white">
-                                    <tr><th class="text-center" width="10%">No</th><th>Komponen Pembiayaan</th><th class="text-end" width="35%">Alokasi Dana (Rp)</th></tr>
+                <div class="col-lg-9">
+                    <div class="card glass-card rounded-4 overflow-hidden">
+                        <div class="table-responsive p-2">
+                            <table class="table glass-table mb-0">
+                                <thead>
+                                    <tr><th class="text-center py-3 border-0" width="10%">No</th><th class="py-3 border-0">Komponen Pembiayaan</th><th class="text-end py-3 border-0" width="35%">Alokasi Dana (Rp)</th></tr>
                                 </thead>
                                 <tbody>
                                     <tr><td class="text-center">1</td><td>Standar Kompetensi Lulusan</td><td class="text-end fw-semibold" id="pub_Bos_SKL">Rp 0</td></tr>
@@ -153,8 +217,8 @@
                                     <tr><td class="text-center">7</td><td>Standar Pengelolaan</td><td class="text-end fw-semibold" id="pub_Bos_Pengelolaan">Rp 0</td></tr>
                                     <tr><td class="text-center">8</td><td>Standar Pembiayaan</td><td class="text-end fw-semibold" id="pub_Bos_Pembiayaan">Rp 0</td></tr>
                                 </tbody>
-                                <tfoot class="bg-dark text-white">
-                                    <tr><th colspan="2" class="text-end fs-5">TOTAL DANA BOS :</th><th class="text-end fs-5 text-warning" id="pub_Bos_Total">Rp 0</th></tr>
+                                <tfoot>
+                                    <tr><th colspan="2" class="text-end fs-5 py-3 border-0">TOTAL DANA BOS :</th><th class="text-end fs-5 text-warning py-3 border-0" id="pub_Bos_Total">Rp 0</th></tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -165,22 +229,34 @@
     </section>
 
     <section id="aplikasi" class="py-5 bg-white">
-        <div class="container">
+        <div class="container position-relative">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="fw-bold text-dark border-bottom border-primary border-3 pb-2">Layanan & Aplikasi</h3>
                 <button class="btn btn-primary btn-sm admin-panel shadow-sm" onclick="openAddAppModal()"><i class="fas fa-plus"></i> Tambah Aplikasi</button>
             </div>
-            <div class="row g-4 text-center" id="appContainer"></div>
+            <div class="slider-container-wrapper" id="appWrapper">
+                <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+                <div class="custom-slider" id="appContainer">
+                    <div class="w-100 text-center text-muted py-3">Memuat aplikasi...</div>
+                </div>
+                <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
+            </div>
         </div>
     </section>
 
     <section id="galeri" class="py-5 bg-light">
-        <div class="container">
+        <div class="container position-relative">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="fw-bold text-dark border-bottom border-success border-3 pb-2">Galeri Kegiatan</h3>
                 <button class="btn btn-success btn-sm admin-panel shadow-sm" data-bs-toggle="modal" data-bs-target="#galeriModal"><i class="fas fa-upload"></i> Upload Foto</button>
             </div>
-            <div class="row g-4" id="galeriContainer"></div>
+            <div class="slider-container-wrapper" id="galeriWrapper">
+                <button class="slider-btn prev"><i class="fas fa-chevron-left"></i></button>
+                <div class="custom-slider" id="galeriContainer">
+                    <div class="w-100 text-center text-muted py-3">Memuat galeri...</div>
+                </div>
+                <button class="slider-btn next"><i class="fas fa-chevron-right"></i></button>
+            </div>
         </div>
     </section>
 
@@ -255,7 +331,7 @@
                 </div>
                 <div class="modal-body p-4">
                     <input type="hidden" id="appId" value="">
-                    <input type="text" id="appName" class="form-control mb-3" placeholder="Nama Aplikasi" autocomplete="off">
+                    <input type="text" id="appName" class="form-control mb-3" placeholder="Nama Aplikasi (Ketik untuk cari ikon otomatis)" autocomplete="off">
                     <input type="text" id="appUrl" class="form-control mb-4" placeholder="URL Link (https://...)" autocomplete="off">
                     <label class="form-label fw-semibold small text-muted">Pilih Ikon Aplikasi:</label>
                     <div id="iconOptionsContainer" class="d-flex gap-3 justify-content-center mb-3 flex-wrap"></div>
@@ -367,7 +443,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ==============================================================
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx2vuqwJDnejFtbjL1uNcVTM52zx1AjswMd6VXjf2Muxh7ELnRGYfG1YWNbfdzew-5gSg/exec";
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwwFsZu8TDhe_3h2zwHkjk7sF3R1XvwsfbYqmQL48vqABNr6LQzKKLg8ltaIPDDEkvKFg/exec";
         // ==============================================================
 
         let globalBeritaData = []; 
@@ -377,23 +453,48 @@
         function fixGoogleDriveLink(url) {
             if (!url) return "";
             let fileId = "";
-            
-            // Menangkap ID dari format URL baru (file.getUrl())
-            if (url.includes("/file/d/")) {
-                fileId = url.split("/file/d/")[1].split("/")[0];
-            } 
-            // Menangkap ID dari format URL lama (uc?id=)
-            else if (url.includes("id=")) {
-                fileId = url.split("id=")[1].split("&")[0];
-            }
-            
-            // Mengubahnya menjadi link thumbnail yang bisa dirender langsung oleh HTML
+            if (url.includes("/file/d/")) { fileId = url.split("/file/d/")[1].split("/")[0]; } 
+            else if (url.includes("id=")) { fileId = url.split("id=")[1].split("&")[0]; }
             return fileId ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600` : url;
         }
 
         function formatRupiah(angka) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka); }
         function formatDateID(dateString) { try { const d = new Date(dateString); if(!isNaN(d)) return d.toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}); } catch(e) {} return dateString; }
         function checkLink(link) { return link && link.trim() !== "" ? link : "javascript:alert('Link aplikasi belum diatur oleh admin!');"; }
+
+        // FUNGSI INISIALISASI AUTO-SLIDER & PANAH
+        function initSlider(wrapperId, scrollStep) {
+            const wrapper = document.getElementById(wrapperId);
+            if (!wrapper) return;
+            const slider = wrapper.querySelector('.custom-slider');
+            const btnPrev = wrapper.querySelector('.prev');
+            const btnNext = wrapper.querySelector('.next');
+            
+            // Logika Klik Panah
+            btnNext.onclick = () => slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
+            btnPrev.onclick = () => slider.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+
+            // Logika Autoplay (Geser otomatis setiap 3 detik)
+            let autoPlay = setInterval(() => {
+                if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
+                    slider.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                }
+            }, 3000);
+
+            // Berhenti otomatis saat kursor diarahkan (hover) ke area slider
+            wrapper.onmouseenter = () => clearInterval(autoPlay);
+            wrapper.onmouseleave = () => {
+                autoPlay = setInterval(() => {
+                    if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
+                        slider.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        slider.scrollBy({ left: scrollStep, behavior: 'smooth' });
+                    }
+                }, 3000);
+            };
+        }
 
         function loadWebsiteData() {
             fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "get_data" }) })
@@ -407,6 +508,7 @@
                 
                 document.getElementById('heroJudul').textContent = s.Judul_Hero || "SDN 24 RIO PAKAVA";
                 document.getElementById('heroSubjudul').textContent = s.Subjudul_Hero || "Mewujudkan Sekolah Dasar Berstandar Modern, Berakhlak Mulia, dan Unggul.";
+                
                 const heroSlider = document.getElementById('heroSlider');
                 if (data.heroBgs && data.heroBgs.length > 0) {
                     const safeHeroBgs = data.heroBgs.map(g => fixGoogleDriveLink(g[2]));
@@ -430,10 +532,14 @@
                     const slide = document.createElement('div'); slide.className = 'hero-slide'; slide.style.backgroundImage = `url('https://source.unsplash.com/1600x900/?school,building')`; slide.style.transform = 'translateX(0)'; heroSlider.appendChild(slide);
                 }
 
+                if (s.BG_Dana_BOS) { document.getElementById('danabos').style.backgroundImage = `url('${fixGoogleDriveLink(s.BG_Dana_BOS)}')`; }
+
                 document.getElementById('beritaContainer').innerHTML = data.berita && data.berita.length > 0 ? data.berita.map(b => {
                     const thumbnail = b[4] ? fixGoogleDriveLink(b[4].split("||")[0]) : 'https://source.unsplash.com/600x400/?school,news';
-                    return `<div class="col-md-4"><div class="card news-card shadow-sm h-100" onclick="showBeritaDetail('${b[0]}')"><img src="${thumbnail}" class="card-img-top" style="height: 200px; object-fit: cover;"><div class="card-body"><small class="text-primary fw-bold"><i class="far fa-calendar-alt me-1"></i>${formatDateID(b[1])}</small><h5 class="card-title fw-bold mt-2">${b[2]}</h5><p class="card-text text-muted small news-content-preview">${b[3]}</p><button class="btn btn-sm btn-outline-danger admin-panel mt-2" onclick="event.stopPropagation(); hapusBerita('${b[0]}')"><i class="fas fa-trash me-1"></i>Hapus</button></div></div></div>`;
-                }).join('') : '<p class="text-muted text-center w-100">Belum ada berita yang dipublikasikan.</p>';
+                    return `<div class="slide-item news"><div class="card news-card shadow-sm h-100" onclick="showBeritaDetail('${b[0]}')"><img src="${thumbnail}" class="card-img-top" style="height: 200px; object-fit: cover;"><div class="card-body"><small class="text-primary fw-bold"><i class="far fa-calendar-alt me-1"></i>${formatDateID(b[1])}</small><h5 class="card-title fw-bold mt-2" style="font-size:1.1rem;">${b[2]}</h5><p class="card-text text-muted small news-content-preview">${b[3]}</p><button class="btn btn-sm btn-outline-danger admin-panel mt-2" onclick="event.stopPropagation(); hapusBerita('${b[0]}')"><i class="fas fa-trash me-1"></i>Hapus</button></div></div></div>`;
+                }).join('') : '<p class="text-muted text-center w-100 mt-2">Belum ada berita yang dipublikasikan.</p>';
+                
+                if (data.berita && data.berita.length > 1) initSlider('beritaWrapper', 340);
                 
                 if(s.Foto_Kepala_Sekolah) document.getElementById('ksFoto').setAttribute('src', fixGoogleDriveLink(s.Foto_Kepala_Sekolah));
                 document.getElementById('ksNama').textContent = s.Nama_Kepala_Sekolah || "-"; document.getElementById('ksSambutan').textContent = s.Sambutan_Kepala_Sekolah || "-";
@@ -455,23 +561,30 @@
                 document.getElementById('footerAlamat').textContent = s.Alamat_Sekolah || "-";
                 [['ytLink', s.URL_YouTube], ['tiktokLink', s.URL_TikTok], ['instaLink', s.URL_Instagram], ['fbLink', s.URL_Facebook], ['xLink', s.URL_X]].forEach(link => { const el = document.getElementById(link[0]); if(link[1]) { el.setAttribute('href', link[1]); el.classList.remove('d-none'); } });
 
-                document.getElementById('appContainer').innerHTML = data.apps.map(app => `
-                    <div class="col-6 col-md-3 position-relative">
-                        <a href="${app[2]}" target="_blank" class="text-decoration-none text-dark">
-                            <div class="card app-card shadow-sm h-100 py-3">
-                                <div class="card-body">
-                                    <i class="fas ${app[3]} fa-2x text-primary mb-3"></i>
-                                    <h6 class="card-title fw-bold mb-0">${app[1]}</h6>
-                                </div>
+                const appColors = ['#0d6efd', '#198754', '#dc3545', '#ffc107', '#0dcaf0', '#6f42c1', '#fd7e14', '#20c997', '#e83e8c', '#6610f2'];
+                document.getElementById('appContainer').innerHTML = data.apps.map((app, index) => {
+                    const color = appColors[index % appColors.length];
+                    return `
+                    <div class="slide-item app">
+                        <a href="${app[2]}" target="_blank" class="text-decoration-none text-dark d-block">
+                            <div class="app-icon-wrapper mx-auto mb-2 d-flex align-items-center justify-content-center" style="background-color: ${color}15; color: ${color}; width: 70px; height: 70px; border-radius: 22px; box-shadow: 0 4px 10px ${color}25;">
+                                <i class="fas ${app[3]} fa-2x"></i>
                             </div>
+                            <h6 class="fw-bold small mb-0 px-1 text-wrap" style="line-height: 1.3;">${app[1]}</h6>
                         </a>
                         <div class="admin-panel mt-2 text-center">
-                            <button class="btn btn-sm btn-outline-primary me-1" onclick="editApp('${app[0]}', '${app[1]}', '${app[2]}', '${app[3]}')"><i class="fas fa-edit"></i></button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="hapusApp('${app[0]}')"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-sm btn-outline-primary mb-1 p-1 px-2" onclick="editApp('${app[0]}', '${app[1]}', '${app[2]}', '${app[3]}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger mb-1 p-1 px-2" onclick="hapusApp('${app[0]}')"><i class="fas fa-trash"></i></button>
                         </div>
-                    </div>`).join('') || '<p class="text-muted w-100">Belum ada link layanan.</p>';
+                    </div>`;
+                }).join('') || '<p class="text-muted w-100 text-center mt-2">Belum ada link layanan.</p>';
 
-                document.getElementById('galeriContainer').innerHTML = data.galeri.map(g => `<div class="col-sm-6 col-md-4"><div class="card shadow-sm border-0 h-100"><img src="${fixGoogleDriveLink(g[2])}" class="card-img-top" style="height: 200px; object-fit: cover;"><div class="card-body text-center"><p class="card-text fw-semibold mb-2">${g[1]}</p><button class="btn btn-sm btn-outline-danger admin-panel mt-2" onclick="hapusFoto('${g[0]}')"><i class="fas fa-trash me-1"></i>Hapus Foto</button></div></div></div>`).join('') || '<p class="text-muted text-center w-100">Belum ada foto.</p>';
+                if (data.apps && data.apps.length > 3) initSlider('appWrapper', 150);
+
+                document.getElementById('galeriContainer').innerHTML = data.galeri.map(g => `<div class="slide-item galeri"><div class="card shadow-sm border-0 h-100"><img src="${fixGoogleDriveLink(g[2])}" class="card-img-top rounded-top" style="height: 180px; object-fit: cover;"><div class="card-body text-center p-2"><p class="card-text fw-semibold mb-1 small">${g[1]}</p><button class="btn btn-sm btn-outline-danger admin-panel mt-1" onclick="hapusFoto('${g[0]}')"><i class="fas fa-trash me-1"></i>Hapus</button></div></div></div>`).join('') || '<p class="text-muted text-center w-100 mt-2">Belum ada foto.</p>';
+                
+                if (data.galeri && data.galeri.length > 2) initSlider('galeriWrapper', 300);
+
             }).catch(err => console.error(err));
         }
 
@@ -568,6 +681,8 @@
         function processAndCompressImage(file, callback) { compressImagePromise(file).then(callback); }
         function handleKsUploadDirect(input) { if(!input.files[0]) return; const loading = document.getElementById('ksLoadingDirect'); loading.classList.remove('d-none'); processAndCompressImage(input.files[0], (base64) => { fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "upload_ks", fileData: base64 }) }).then(() => window.location.reload()); }); }
         function handleBgUpload(input) { if(!input.files[0]) return; document.getElementById('bgLoading').classList.remove('d-none'); processAndCompressImage(input.files[0], (base64) => { fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "update_bg", fileData: base64, nama: "Latar Belakang Hero (CMS)" }) }).then(() => window.location.reload()); }); }
+        function handleBosBgUpload(input) { if(!input.files[0]) return; document.getElementById('bosBgLoading').classList.remove('d-none'); processAndCompressImage(input.files[0], (base64) => { fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "update_bos_bg", fileData: base64 }) }).then(() => window.location.reload()); }); }
+        
         document.getElementById('formBerita').addEventListener('submit', function(e) {
             e.preventDefault(); const btn = document.getElementById('btnSubmitBerita'); const files = document.getElementById('beritaFoto').files;
             if(files.length === 0) return alert("Pilih minimal 1 foto dokumentasi!"); btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Mengunggah...'; btn.disabled = true;
@@ -581,16 +696,23 @@
         document.getElementById('appName').addEventListener('input', function() {
             const name = this.value.toLowerCase();
             let options = ['fa-link', 'fa-external-link-alt', 'fa-globe', 'fa-paper-plane']; 
-            if(name.includes('rapor') || name.includes('nilai') || name.includes('ujian') || name.includes('cbt')) options = ['fa-book-open', 'fa-laptop-code', 'fa-file-alt', 'fa-graduation-cap'];
-            else if(name.includes('absen') || name.includes('hadir')) options = ['fa-user-check', 'fa-calendar-check', 'fa-clipboard-list', 'fa-clock'];
-            else if(name.includes('ppdb') || name.includes('spmb') || name.includes('daftar')) options = ['fa-user-plus', 'fa-id-card', 'fa-file-signature', 'fa-school'];
-            else if(name.includes('uang') || name.includes('spp') || name.includes('bayar') || name.includes('bos')) options = ['fa-money-bill-wave', 'fa-wallet', 'fa-file-invoice-dollar', 'fa-coins'];
-            else if(name.includes('perpus') || name.includes('buku') || name.includes('baca')) options = ['fa-book', 'fa-book-reader', 'fa-atlas', 'fa-swatchbook'];
-            else if(name.includes('jadwal') || name.includes('agenda')) options = ['fa-calendar-alt', 'fa-calendar-days', 'fa-list', 'fa-clock'];
+            
+            if(name.includes('rapor') || name.includes('nilai') || name.includes('ujian') || name.includes('cbt') || name.includes('asesmen')) options = ['fa-book-open', 'fa-laptop-code', 'fa-file-alt', 'fa-graduation-cap'];
+            else if(name.includes('absen') || name.includes('hadir') || name.includes('kehadiran')) options = ['fa-user-check', 'fa-calendar-check', 'fa-clipboard-list', 'fa-clock'];
+            else if(name.includes('ppdb') || name.includes('spmb') || name.includes('daftar') || name.includes('mutasi')) options = ['fa-user-plus', 'fa-id-card', 'fa-file-signature', 'fa-school'];
+            else if(name.includes('uang') || name.includes('spp') || name.includes('bayar') || name.includes('bos') || name.includes('keuangan')) options = ['fa-money-bill-wave', 'fa-wallet', 'fa-file-invoice-dollar', 'fa-coins'];
+            else if(name.includes('perpus') || name.includes('buku') || name.includes('baca') || name.includes('literasi')) options = ['fa-book', 'fa-book-reader', 'fa-atlas', 'fa-swatchbook'];
+            else if(name.includes('jadwal') || name.includes('agenda') || name.includes('kalender')) options = ['fa-calendar-alt', 'fa-calendar-days', 'fa-list', 'fa-clock'];
             else if(name.includes('miskin') || name.includes('beasiswa') || name.includes('bantuan') || name.includes('pip') || name.includes('kip')) options = ['fa-hands-helping', 'fa-hand-holding-heart', 'fa-hand-holding-usd', 'fa-user-graduate'];
-            else if(name.includes('data') || name.includes('dapodik') || name.includes('info')) options = ['fa-database', 'fa-server', 'fa-folder-open', 'fa-chart-bar'];
-            else if(name.includes('guru') || name.includes('ptk') || name.includes('pegawai') || name.includes('staf')) options = ['fa-chalkboard-teacher', 'fa-user-tie', 'fa-users-cog', 'fa-id-badge'];
-            else if(name.includes('siswa') || name.includes('murid') || name.includes('anak')) options = ['fa-users', 'fa-user-graduate', 'fa-child', 'fa-address-book'];
+            else if(name.includes('data') || name.includes('dapodik') || name.includes('info') || name.includes('statistik')) options = ['fa-database', 'fa-server', 'fa-folder-open', 'fa-chart-bar'];
+            else if(name.includes('guru') || name.includes('ptk') || name.includes('pegawai') || name.includes('staf') || name.includes('tendik')) options = ['fa-chalkboard-teacher', 'fa-user-tie', 'fa-users-cog', 'fa-id-badge'];
+            else if(name.includes('siswa') || name.includes('murid') || name.includes('anak') || name.includes('peserta')) options = ['fa-users', 'fa-user-graduate', 'fa-child', 'fa-address-book'];
+            else if(name.includes('rumah') || name.includes('gedung') || name.includes('fasilitas') || name.includes('sarpras')) options = ['fa-home', 'fa-house-user', 'fa-building', 'fa-warehouse'];
+            else if(name.includes('surat') || name.includes('tamu') || name.includes('pesan') || name.includes('kontak')) options = ['fa-envelope', 'fa-envelope-open-text', 'fa-address-card', 'fa-comments'];
+            else if(name.includes('foto') || name.includes('video') || name.includes('galeri') || name.includes('media')) options = ['fa-images', 'fa-camera', 'fa-video', 'fa-photo-video'];
+            else if(name.includes('admin') || name.includes('pengaturan') || name.includes('sistem') || name.includes('cpanel')) options = ['fa-cogs', 'fa-tools', 'fa-user-shield', 'fa-sliders-h'];
+            else if(name.includes('kesehatan') || name.includes('uks') || name.includes('medis') || name.includes('dokter')) options = ['fa-briefcase-medical', 'fa-heartbeat', 'fa-hospital', 'fa-plus-square'];
+            else if(name.includes('prestasi') || name.includes('juara') || name.includes('lomba') || name.includes('penghargaan')) options = ['fa-trophy', 'fa-medal', 'fa-award', 'fa-star'];
             
             document.getElementById('iconOptionsContainer').innerHTML = options.map((opt, idx) => `<div class="icon-option ${idx === 0 ? 'selected' : ''}" onclick="selectAppIcon(this, '${opt}')"><i class="fas ${opt}"></i></div>`).join('');
             document.getElementById('selectedAppIcon').value = options[0];
@@ -599,59 +721,36 @@
         function selectAppIcon(element, iconClass) { document.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected')); element.classList.add('selected'); document.getElementById('selectedAppIcon').value = iconClass; }
         
         function openAddAppModal() {
-            document.getElementById('appId').value = "";
-            document.getElementById('appName').value = "";
-            document.getElementById('appUrl').value = "";
+            document.getElementById('appId').value = ""; document.getElementById('appName').value = ""; document.getElementById('appUrl').value = "";
             document.getElementById('appName').dispatchEvent(new Event('input'));
             document.getElementById('appModalTitle').innerText = "Tambah Menu Aplikasi";
             new bootstrap.Modal(document.getElementById('appModal')).show();
         }
 
         function editApp(id, nama, url, icon) {
-            document.getElementById('appId').value = id;
-            document.getElementById('appName').value = nama;
-            document.getElementById('appUrl').value = url;
+            document.getElementById('appId').value = id; document.getElementById('appName').value = nama; document.getElementById('appUrl').value = url;
             document.getElementById('appName').dispatchEvent(new Event('input')); 
-            
             setTimeout(() => {
-                let exists = false;
-                document.querySelectorAll('.icon-option').forEach(el => {
-                    if (el.querySelector('i').className === 'fas ' + icon) { selectAppIcon(el, icon); exists = true; }
-                });
+                let exists = false; document.querySelectorAll('.icon-option').forEach(el => { if (el.querySelector('i').className === 'fas ' + icon) { selectAppIcon(el, icon); exists = true; } });
                 if(!exists) {
                     document.getElementById('iconOptionsContainer').innerHTML += `<div class="icon-option selected" onclick="selectAppIcon(this, '${icon}')"><i class="fas ${icon}"></i></div>`;
                     document.getElementById('selectedAppIcon').value = icon;
                     document.querySelectorAll('.icon-option').forEach(el => { if(el.querySelector('i').className !== 'fas ' + icon) el.classList.remove('selected'); });
                 }
             }, 100);
-            
             document.getElementById('appModalTitle').innerText = "Edit Menu Aplikasi";
             new bootstrap.Modal(document.getElementById('appModal')).show();
         }
 
         function saveApp() { 
-            const id = document.getElementById('appId').value;
-            const nama = document.getElementById('appName').value;
-            const url = document.getElementById('appUrl').value;
-            const icon = document.getElementById('selectedAppIcon').value;
+            const id = document.getElementById('appId').value, nama = document.getElementById('appName').value, url = document.getElementById('appUrl').value, icon = document.getElementById('selectedAppIcon').value;
             if(!nama || !url) return alert("Harap isi semua kolom!"); 
-            
-            document.getElementById('btnSaveApp').innerHTML = "Menyimpan..."; 
-            document.getElementById('btnSaveApp').disabled = true; 
-            
-            const payload = { action: id ? "edit_app" : "tambah_app", nama: nama, url: url, icon: icon };
-            if (id) payload.id = id;
-
-            fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify(payload) })
-            .then(() => window.location.reload()); 
+            document.getElementById('btnSaveApp').innerHTML = "Menyimpan..."; document.getElementById('btnSaveApp').disabled = true; 
+            const payload = { action: id ? "edit_app" : "tambah_app", nama: nama, url: url, icon: icon }; if (id) payload.id = id;
+            fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify(payload) }).then(() => window.location.reload()); 
         }
 
-        function hapusApp(id) { 
-            if(confirm("Yakin ingin menghapus aplikasi ini?")) {
-                fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "hapus_app", id: id }) })
-                .then(() => window.location.reload());
-            }
-        }
+        function hapusApp(id) { if(confirm("Yakin ingin menghapus aplikasi ini?")) { fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "hapus_app", id: id }) }).then(() => window.location.reload()); } }
 
         function saveFoto() { const judul = document.getElementById('fotoJudul').value, file = document.getElementById('fotoFile').files[0]; if(!file || !judul) return; processAndCompressImage(file, (base64) => { fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "upload_galeri", nama: judul, fileData: base64 }) }).then(() => window.location.reload()); }); }
         function hapusFoto(id) { if(confirm("Hapus foto ini?")) fetch(GAS_WEB_APP_URL, { method: 'POST', mode: 'cors', body: JSON.stringify({ action: "hapus_galeri", id: id }) }).then(() => window.location.reload()); }
